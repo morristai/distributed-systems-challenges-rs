@@ -1,0 +1,8 @@
+[package]
+name = "challenge-1-echo"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+async-trait = "0.1.88"
+maelstrom-node = "0.1.6"
