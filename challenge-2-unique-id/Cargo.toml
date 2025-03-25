@@ -1,0 +1,10 @@
+[package]
+name = "challenge-2-unique-id"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+async-trait = "0.1.88"
+maelstrom-node = "0.1.6"
+serde = { version = "1.0.219", features = ["derive"] }
+uuid = { version = "1.16.0", features = ["v4"] }
