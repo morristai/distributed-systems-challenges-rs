@@ -1,0 +1,10 @@
+[package]
+name = "challenge-3-broadcast"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+async-trait = "0.1.88"
+log = "0.4.27"
+serde = { version = "1.0.219", features = ["derive"] }
+maelstrom-node = "0.1.6"
