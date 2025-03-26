@@ -26,8 +26,8 @@ struct Handler {
 
 #[derive(Clone, Default)]
 struct Inner {
-    s: HashSet<u64>,
-    t: Vec<String>,
+    messages: HashSet<u64>,
+    neighbors: Vec<String>,
 }
 
 #[async_trait]
@@ -38,7 +38,7 @@ impl Node for Handler {
             Ok(Request::Read {}) => {
                 let data = self.snapshot();
                 let msg = Request::ReadOk { messages: data };
-                return runtime.reply(req, msg).await;
+                runtime.reply(req, msg).await
             }
             Ok(Request::Broadcast { message: element }) => {
                 if self.try_add(element) {
@@ -48,13 +48,13 @@ impl Node for Handler {
                     }
                 }
 
-                return runtime.reply_ok(req).await;
+                runtime.reply_ok(req).await
             }
             Ok(Request::Topology { topology }) => {
                 let neighbours = topology.get(runtime.node_id()).unwrap();
-                self.inner.lock().unwrap().t = neighbours.clone();
+                self.inner.lock().unwrap().neighbors = neighbours.clone();
                 info!("My neighbors are {:?}", neighbours);
-                return runtime.reply_ok(req).await;
+                runtime.reply_ok(req).await
             }
             _ => done(runtime, req),
         }
@@ -63,13 +63,13 @@ impl Node for Handler {
 
 impl Handler {
     fn snapshot(&self) -> Vec<u64> {
-        self.inner.lock().unwrap().s.iter().copied().collect()
+        self.inner.lock().unwrap().messages.iter().copied().collect()
     }
 
     fn try_add(&self, val: u64) -> bool {
         let mut g = self.inner.lock().unwrap();
-        if !g.s.contains(&val) {
-            g.s.insert(val);
+        if !g.messages.contains(&val) {
+            g.messages.insert(val);
             return true;
         }
         false

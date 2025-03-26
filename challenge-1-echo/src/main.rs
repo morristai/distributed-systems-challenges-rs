@@ -4,6 +4,7 @@ use maelstrom::{done, Node, Result, Runtime};
 use std::sync::Arc;
 
 pub(crate) fn main() -> Result<()> {
+    // NOTE: This will init a Tokio async runtime
     Runtime::init(try_main())
 }
 
